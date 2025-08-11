@@ -1,7 +1,3 @@
-Here’s a cleaned-up, **professional, visually balanced** README for your **LawBot – Legal Assistant Chatbot**, with properly arranged sections, consistent formatting, and improved image presentation.
-
----
-
 # **LawBot – Legal Assistant Chatbot**
 
 A Django-based chatbot that provides **general legal information** using OpenAI’s GPT API.
@@ -194,6 +190,3 @@ lawbot/
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
 ---
-
-If you want, I can also make a **shield badge section** (version, Docker ready, Python version, license) at the top so the README looks like a polished open-source project on GitHub.
-That would make it look even more professional.

@@ -1,101 +1,114 @@
-# LawBot - Legal Assistant Chatbot
+Here’s a cleaned-up, **professional, visually balanced** README for your **LawBot – Legal Assistant Chatbot**, with properly arranged sections, consistent formatting, and improved image presentation.
 
-A Django-based legal assistant chatbot that provides general legal information using OpenAI's GPT API.
+---
 
-## Features
+# **LawBot – Legal Assistant Chatbot**
 
-- Interactive chat interface
-- Legal information assistance
-- Conversation history storage
-- Modern, responsive UI
-- Docker support for easy deployment
+A Django-based chatbot that provides **general legal information** using OpenAI’s GPT API.
 
-## Quick Start with Docker
+> ⚖ **Disclaimer**: LawBot is **not** a substitute for professional legal advice. Always consult a qualified attorney for specific legal matters.
 
-### 1. Clone and Setup
+---
+
+## **📌 Features**
+
+* 💬 **Interactive Chat Interface** – Real-time question & answer
+* 📚 **Legal Information Assistance** – Trained to provide general guidance
+* 📝 **Conversation History** – Stores chat history in a database
+* 🎨 **Responsive UI** – Modern and clean interface
+* 🐳 **Docker Support** – Easy deployment anywhere
+
+---
+
+## **🚀 Quick Start with Docker**
+
+### **1. Clone the Repository**
 
 ```bash
 git clone https://github.com/harryongit/LawBot---Legal-Assistant-Chatbot.git
 cd lawbot
 ```
 
-### 2. Configure Environment Variables
+### **2. Configure Environment Variables**
 
-Copy the example environment file and configure your settings:
+Copy the example environment file:
 
 ```bash
-cp .env .env
+cp .env.example .env
 ```
 
 Edit `.env` and add your OpenAI API key:
+
 ```
 OPENAI_API_KEY=your_actual_api_key_here
 ```
 
-### 3. Run with Docker Compose
+### **3. Run with Docker Compose**
 
 ```bash
 docker-compose up --build
 ```
 
-### 4. Access the Application
+### **4. Access the Application**
 
-Open your browser and go to: `http://localhost:8000`
+Open:
 
-## Manual Setup (Without Docker)
+```
+http://localhost:8000
+```
 
-### 1. Install Dependencies
+---
+
+## **⚙ Manual Setup (Without Docker)**
+
+### **1. Install Dependencies**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure OpenAI API Key
+### **2. Configure OpenAI API Key**
 
-You need to set up your OpenAI API key as an environment variable:
+**Windows (Command Prompt)**:
 
-**Windows (Command Prompt):**
 ```cmd
-set OPENAI_API_KEY=your_openai_api_key_here
+set OPENAI_API_KEY=your_key_here
 ```
 
-**Windows (PowerShell):**
+**Windows (PowerShell)**:
+
 ```powershell
-$env:OPENAI_API_KEY="your_openai_api_key_here"
+$env:OPENAI_API_KEY="your_key_here"
 ```
 
-**Linux/Mac:**
+**Linux/Mac**:
+
 ```bash
-export OPENAI_API_KEY=your_openai_api_key_here
+export OPENAI_API_KEY=your_key_here
 ```
 
-### 3. Get Your OpenAI API Key
-
-1. Go to [OpenAI Platform](https://platform.openai.com/api-keys)
-2. Sign in or create an account
-3. Create a new API key
-4. Copy the key and set it as the environment variable above
-
-### 4. Run Database Migrations
+### **3. Run Migrations**
 
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### 5. Start the Development Server
+### **4. Start the Server**
 
 ```bash
 python manage.py runserver
 ```
 
-### 6. Access the Application
+Visit:
 
-Open your browser and go to: `http://127.0.0.1:8000/`
+```
+http://127.0.0.1:8000/
+```
 
-## Docker Commands
+---
 
-### Build and Run with Docker
+## **🐳 Docker Commands**
 
 ```bash
 # Build the image
@@ -105,75 +118,82 @@ docker build -t lawbot .
 docker run -p 8000:8000 -e OPENAI_API_KEY=your_key_here lawbot
 ```
 
-### Using Docker Compose
+**Using Docker Compose**
 
 ```bash
-# Start the application
-docker-compose up
-
-# Start in background
-docker-compose up -d
-
-# Stop the application
-docker-compose down
-
-# Rebuild and start
-docker-compose up --build
+docker-compose up -d   # Run in background
+docker-compose down    # Stop containers
+docker-compose up --build  # Rebuild & run
 ```
 
-## Troubleshooting
+---
 
-### "Error contacting GPT API" Issues
+## **🛠 Troubleshooting**
 
-1. **Check API Key**: Ensure your `OPENAI_API_KEY` environment variable is set correctly
-2. **Verify API Key**: Make sure your API key is valid and has sufficient credits
-3. **Network Issues**: Check your internet connection
-4. **Rate Limits**: If you hit rate limits, wait a moment and try again
+### **"Error contacting GPT API"**
 
-### Common Error Messages
+1. Check if `OPENAI_API_KEY` is correctly set.
+2. Verify the API key is valid and has credits.
+3. Ensure internet connectivity.
+4. Watch for **rate limits** from OpenAI.
 
-- **"OpenAI API key is not configured"**: Set the `OPENAI_API_KEY` environment variable
-- **"Invalid API key"**: Check that your API key is correct
-- **"Rate limit exceeded"**: Wait a moment before trying again
+### **Docker Issues**
 
-### Docker Issues
+* **Port in use** → Change port in `docker-compose.yml` or stop other apps using 8000.
+* **Permission denied** → Ensure Docker has correct permissions.
+* **Build fails** → Check all files & Dockerfile syntax.
 
-- **Port already in use**: Change the port in `docker-compose.yml` or stop other services using port 8000
-- **Permission denied**: Make sure Docker has proper permissions
-- **Build fails**: Check that all files are present and Dockerfile is correct
+---
 
-## Project Structure
+## **📂 Project Structure**
 
 ```
 lawbot/
-├── chatbot/          # Main chatbot application
-│   ├── models.py     # Database models
-│   ├── views.py      # Chat view logic
-│   └── urls.py       # URL routing
-├── templates/        # HTML templates
-│   ├── base.html     # Base template
-│   └── index.html    # Chat interface
-├── lawbot/           # Django project settings
-│   └── settings.py   # Project configuration
-├── Dockerfile        # Docker configuration
-├── docker-compose.yml # Docker Compose configuration
-├── requirements.txt  # Python dependencies
-├── .dockerignore     # Docker ignore file
-├── env.example       # Environment variables example
-└── manage.py         # Django management script
+├── chatbot/              # Main chatbot app
+│   ├── models.py         # Database models
+│   ├── views.py          # Chat logic
+│   └── urls.py           # App routes
+├── templates/            # HTML templates
+│   ├── base.html         # Base template
+│   └── index.html        # Chat interface
+├── lawbot/               # Django settings
+│   └── settings.py
+├── Dockerfile            # Docker config
+├── docker-compose.yml    # Docker Compose config
+├── requirements.txt      # Python dependencies
+├── .dockerignore
+├── env.example           # Example env vars
+└── manage.py
 ```
 
-## Legal Disclaimer
+---
 
-This chatbot provides general legal information only. It is not a substitute for professional legal advice. Always consult with a qualified attorney for specific legal matters.
+## **🖼 Application Screenshots**
 
-<img width="801" height="797" alt="{4B7C4CB0-B81A-4116-84BA-DB2CC2ED83D0}" src="https://github.com/user-attachments/assets/fa1dc758-c030-4125-a4ff-082666f774d7" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fa1dc758-c030-4125-a4ff-082666f774d7" width="45%" />
+  <img src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" width="45%" />
+</p>
 
-<img width="1197" height="817" alt="image" src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/23c5f547-2071-4134-aeab-a44489bde901" width="90%" />
+</p>
 
-<img width="1778" height="640" alt="image" src="https://github.com/user-attachments/assets/23c5f547-2071-4134-aeab-a44489bde901" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/323d0d1f-07f5-4991-a2ef-893c07649d1b" width="90%" />
+</p>
 
-<img width="1888" height="913" alt="image" src="https://github.com/user-attachments/assets/323d0d1f-07f5-4991-a2ef-893c07649d1b" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fe201241-d85b-40bd-9d14-1e4ba626f3ec" width="90%" />
+</p>
 
-<img width="1915" height="911" alt="{797111F8-6326-4B03-A36C-18F9AE240326}" src="https://github.com/user-attachments/assets/fe201241-d85b-40bd-9d14-1e4ba626f3ec" />
+---
 
+## **📜 License**
+
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
+
+---
+
+If you want, I can also make a **shield badge section** (version, Docker ready, Python version, license) at the top so the README looks like a polished open-source project on GitHub.
+That would make it look even more professional.

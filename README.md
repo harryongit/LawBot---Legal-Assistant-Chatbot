@@ -166,3 +166,5 @@ lawbot/
 ## Legal Disclaimer
 
 This chatbot provides general legal information only. It is not a substitute for professional legal advice. Always consult with a qualified attorney for specific legal matters.
+
+<img width="1197" height="817" alt="image" src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" />

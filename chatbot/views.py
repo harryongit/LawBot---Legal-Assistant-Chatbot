@@ -20,6 +20,7 @@ from .serializers import (
 from .signals import conversation_started, conversation_ended, error_occurred
 import json
 
+
 OPENAI_API_KEY = settings.OPENAI_API_KEY
 
 class MessageViewSet(viewsets.ModelViewSet):

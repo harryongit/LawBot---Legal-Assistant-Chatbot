@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}LawBot - AI Legal Assistant{% endblock %}</title>
+    
+    <!-- Multiple Font Awesome CDN sources for redundancy -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v6.4.0/css/all.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
@@ -313,6 +320,35 @@
             font-size: 16px;
         }
 
+        /* Fallback icons using Unicode characters */
+        .icon-fallback {
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .icon-gavel::before { content: "⚖"; }
+        .icon-user::before { content: "👤"; }
+        .icon-robot::before { content: "🤖"; }
+        .icon-paper-plane::before { content: "✈"; }
+        .icon-spinner::before { content: "⟳"; }
+        .icon-comments::before { content: "💬"; }
+        
+        /* Inline SVG icon base */
+        .icon-svg {
+            width: 1em;
+            height: 1em;
+            fill: currentColor;
+            vertical-align: -0.15em;
+            display: inline-block;
+        }
+        
+        /* Spinner animation for fallback and SVG */
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .spin { animation: spin 1s linear infinite; transform-origin: 50% 50%; }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             body {
@@ -359,6 +395,63 @@
             background: #9ca3af;
         }
     </style>
+
+    <script>
+        // Check if Font Awesome is loaded, if not use fallback icons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Test if Font Awesome is loaded
+            const testIcon = document.createElement('i');
+            testIcon.className = 'fas fa-gavel';
+            testIcon.style.position = 'absolute';
+            testIcon.style.left = '-9999px';
+            document.body.appendChild(testIcon);
+            
+            const computedStyle = window.getComputedStyle(testIcon, '::before');
+            const content = computedStyle.getPropertyValue('content');
+            
+            // If Font Awesome is not loaded, replace icons with fallbacks
+            if (content === 'none' || content === '') {
+                // Replace Font Awesome icons with fallback Unicode icons
+                const iconMappings = {
+                    'fas fa-gavel': 'icon-gavel',
+                    'fas fa-user': 'icon-user', 
+                    'fas fa-robot': 'icon-robot',
+                    'fas fa-paper-plane': 'icon-paper-plane',
+                    'fas fa-spinner': 'icon-spinner',
+                    'fas fa-comments': 'icon-comments'
+                };
+                
+                Object.keys(iconMappings).forEach(faClass => {
+                    const elements = document.querySelectorAll('.' + faClass.replace(/ /g, '.'));
+                    elements.forEach(el => {
+                        el.className = el.className.replace(faClass, iconMappings[faClass] + ' icon-fallback');
+                    });
+                });
+            }
+            
+            document.body.removeChild(testIcon);
+        });
+
+        // Inline SVG icon set
+        function getSvgIcon(name, extraClass = '') {
+            switch (name) {
+                case 'gavel':
+                    return '<svg class="icon-svg '+extraClass+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21h14v2H2z"/><path d="M7.1 3.1l3.8 3.8-2.1 2.1L5 5.2 7.1 3.1zm4.9 0l3.8 3.8-2.1 2.1-3.8-3.8L12 3.1zm-5 8.3l2.1-2.1 9.5 9.5-2.1 2.1-9.5-9.5z"/></svg>';
+                case 'user':
+                    return '<svg class="icon-svg '+extraClass+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5zm0 2c-4.4 0-8 2.2-8 5v3h16v-3c0-2.8-3.6-5-8-5z"/></svg>';
+                case 'robot':
+                    return '<svg class="icon-svg '+extraClass+'" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="9" cy="12" r="2" fill="#fff"/><circle cx="15" cy="12" r="2" fill="#fff"/><path d="M12 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+                case 'paper-plane':
+                    return '<svg class="icon-svg '+extraClass+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l20-9L2 3v7l14 2-14 2v7z"/></svg>';
+                case 'spinner':
+                    return '<svg class="icon-svg '+extraClass+' spin" viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="20" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round" stroke-dasharray="31.4 31.4"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></circle></svg>';
+                case 'comments':
+                    return '<svg class="icon-svg '+extraClass+'" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v10H7l-3 3V4z"/></svg>';
+                default:
+                    return '';
+            }
+        }
+    </script>
 </head>
 <body>
     {% block content %}

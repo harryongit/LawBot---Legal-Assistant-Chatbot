@@ -7,7 +7,7 @@
     <!-- Chat Header -->
     <div class="chat-header">
         <div class="avatar">
-            <i class="fas fa-gavel"></i>
+            <span id="headerIcon" aria-hidden="true"></span>
         </div>
         <div class="info">
             <h1>LawBot</h1>
@@ -60,9 +60,7 @@
                     id="messageInput"
                 ></textarea>
             </div>
-            <button type="button" class="send-button" id="sendButton">
-                <i class="fas fa-paper-plane"></i>
-            </button>
+            <button type="button" class="send-button" id="sendButton"></button>
         </div>
     </div>
 </div>
@@ -100,7 +98,7 @@ function sendMessage() {
     // Disable input and button
     messageInput.disabled = true;
     sendButton.disabled = true;
-    sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    sendButton.innerHTML = getSvgIcon('spinner');
     
     // Add user message to chat
     addMessageToChat('user', message);
@@ -137,7 +135,7 @@ function sendMessage() {
         // Re-enable input and button
         messageInput.disabled = false;
         sendButton.disabled = false;
-        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        sendButton.innerHTML = getSvgIcon('paper-plane');
         messageInput.focus();
     })
     .catch(error => {
@@ -148,7 +146,7 @@ function sendMessage() {
         // Re-enable input and button
         messageInput.disabled = false;
         sendButton.disabled = false;
-        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        sendButton.innerHTML = getSvgIcon('paper-plane');
         messageInput.focus();
     });
 }
@@ -160,7 +158,7 @@ function addMessageToChat(role, content) {
     
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
-    avatar.innerHTML = role === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+    avatar.innerHTML = role === 'user' ? getSvgIcon('user') : getSvgIcon('robot');
     
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
@@ -192,7 +190,7 @@ function showTypingIndicator() {
     
     const avatar = document.createElement('div');
     avatar.className = 'message-avatar';
-    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+    avatar.innerHTML = getSvgIcon('robot');
     
     const typingContent = document.createElement('div');
     typingContent.className = 'typing-indicator';
@@ -216,6 +214,11 @@ function removeTypingIndicator() {
     }
 }
 
+// Helper function to get icon HTML with fallback (kept for compatibility, unused now)
+function getIconHTML(iconClass, fallbackClass) {
+    return getSvgIcon(iconClass.includes('paper-plane') ? 'paper-plane' : 'spinner');
+}
+
 // Get CSRF token from cookies
 function getCookie(name) {
     let cookieValue = null;
@@ -232,10 +235,34 @@ function getCookie(name) {
     return cookieValue;
 }
 
+// Replace any server-rendered Font Awesome <i> icons with inline SVGs
+function replaceExistingIcons() {
+    const replacements = [
+        { selector: 'i.fas.fa-user', name: 'user' },
+        { selector: 'i.fas.fa-robot', name: 'robot' },
+        { selector: 'i.fas.fa-comments', name: 'comments' },
+        { selector: 'i.fas.fa-gavel', name: 'gavel' }
+    ];
+    replacements.forEach(({selector, name}) => {
+        document.querySelectorAll(selector).forEach(el => {
+            const span = document.createElement('span');
+            span.innerHTML = getSvgIcon(name);
+            el.replaceWith(span.firstChild);
+        });
+    });
+}
+
 // Focus input on page load
 window.addEventListener('load', function() {
     messageInput.focus();
     chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Initialize send button and header icon with SVGs
+    sendButton.innerHTML = getSvgIcon('paper-plane');
+    const headerIcon = document.getElementById('headerIcon');
+    if (headerIcon) headerIcon.innerHTML = getSvgIcon('gavel');
+
+    replaceExistingIcons();
 });
 </script>
 {% endblock %}

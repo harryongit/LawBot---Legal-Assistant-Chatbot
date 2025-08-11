@@ -167,4 +167,13 @@ lawbot/
 
 This chatbot provides general legal information only. It is not a substitute for professional legal advice. Always consult with a qualified attorney for specific legal matters.
 
+<img width="801" height="797" alt="{4B7C4CB0-B81A-4116-84BA-DB2CC2ED83D0}" src="https://github.com/user-attachments/assets/fa1dc758-c030-4125-a4ff-082666f774d7" />
+
 <img width="1197" height="817" alt="image" src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" />
+
+<img width="1778" height="640" alt="image" src="https://github.com/user-attachments/assets/23c5f547-2071-4134-aeab-a44489bde901" />
+
+<img width="1888" height="913" alt="image" src="https://github.com/user-attachments/assets/323d0d1f-07f5-4991-a2ef-893c07649d1b" />
+
+<img width="1915" height="911" alt="{797111F8-6326-4B03-A36C-18F9AE240326}" src="https://github.com/user-attachments/assets/fe201241-d85b-40bd-9d14-1e4ba626f3ec" />
+

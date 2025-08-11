@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block title %}LawBot API Documentation{% endblock %}
+
+{% block content %}
+<div class="api-docs-container">
+    <div class="api-header">
+        <h1><i class="fas fa-code"></i> LawBot API Documentation</h1>
+        <p>RESTful API endpoints for the LawBot chatbot</p>
+    </div>
+
+    <div class="api-section">
+        <h2>Chat Endpoints</h2>
+        
+        <div class="endpoint">
+            <h3>POST /api/chat/</h3>
+            <p>Send a message to the chatbot and get an AI response</p>
+            
+            <div class="request-example">
+                <h4>Request:</h4>
+                <pre><code>{
+    "message": "What are the basic requirements for filing a lawsuit?"
+}</code></pre>
+            </div>
+            
+            <div class="response-example">
+                <h4>Success Response:</h4>
+                <pre><code>{
+    "response": "To file a lawsuit, you typically need...",
+    "message_id": 123
+}</code></pre>
+            </div>
+            
+            <div class="response-example">
+                <h4>Error Response:</h4>
+                <pre><code>{
+    "error": "Invalid API key",
+    "error_type": "auth_error"
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="api-section">
+        <h2>Message Endpoints</h2>
+        
+        <div class="endpoint">
+            <h3>GET /api/messages/</h3>
+            <p>Get all chat messages</p>
+            
+            <div class="response-example">
+                <h4>Response:</h4>
+                <pre><code>[
+    {
+        "id": 1,
+        "role": "user",
+        "content": "Hello",
+        "created_at": "2024-01-01T12:00:00Z"
+    },
+    {
+        "id": 2,
+        "role": "assistant",
+        "content": "Hello! How can I help you today?",
+        "created_at": "2024-01-01T12:00:01Z"
+    }
+]</code></pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <h3>GET /api/messages/?role=user</h3>
+            <p>Filter messages by role (user or assistant)</p>
+        </div>
+
+        <div class="endpoint">
+            <h3>GET /api/messages/{id}/</h3>
+            <p>Get a specific message by ID</p>
+        </div>
+
+        <div class="endpoint">
+            <h3>DELETE /api/messages/{id}/</h3>
+            <p>Delete a specific message</p>
+        </div>
+    </div>
+
+    <div class="api-section">
+        <h2>Error Types</h2>
+        <ul>
+            <li><strong>validation_error</strong>: Invalid request data</li>
+            <li><strong>configuration_error</strong>: API key not configured</li>
+            <li><strong>auth_error</strong>: Invalid API key</li>
+            <li><strong>rate_limit</strong>: Rate limit exceeded</li>
+            <li><strong>timeout</strong>: Request timed out</li>
+            <li><strong>network_error</strong>: Network connectivity issues</li>
+            <li><strong>api_error</strong>: General API error</li>
+        </ul>
+    </div>
+
+    <div class="api-section">
+        <h2>Testing the API</h2>
+        <p>You can test these endpoints using curl, Postman, or any HTTP client:</p>
+        
+        <div class="test-example">
+            <h4>Example with curl:</h4>
+            <pre><code># Send a message
+curl -X POST http://localhost:8000/api/chat/ \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is contract law?"}'
+
+# Get all messages
+curl http://localhost:8000/api/messages/
+
+# Get only user messages
+curl http://localhost:8000/api/messages/?role=user</code></pre>
+        </div>
+    </div>
+</div>
+
+<style>
+.api-docs-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+.api-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.api-header h1 {
+    color: #1e293b;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.api-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.api-section {
+    margin-bottom: 40px;
+}
+
+.api-section h2 {
+    color: #1e293b;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.endpoint {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid #667eea;
+}
+
+.endpoint h3 {
+    color: #1e293b;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+}
+
+.endpoint p {
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.request-example, .response-example, .test-example {
+    margin-bottom: 15px;
+}
+
+.request-example h4, .response-example h4, .test-example h4 {
+    color: #374151;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+code {
+    font-family: 'Courier New', monospace;
+}
+
+.api-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.api-section li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.api-section li:last-child {
+    border-bottom: none;
+}
+
+.api-section strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .api-docs-container {
+        padding: 20px 15px;
+        margin: 10px;
+    }
+    
+    .api-header h1 {
+        font-size: 2rem;
+    }
+    
+    pre {
+        font-size: 0.8rem;
+        padding: 10px;
+    }
+}
+</style>
+{% endblock %}

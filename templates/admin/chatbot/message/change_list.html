@@ -1,0 +1,54 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    {% if show_statistics_links %}
+    <li>
+        <a href="{% url 'admin:chatbot_message_statistics' %}" class="addlink">
+            📊 Statistics Dashboard
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'admin:chatbot_message_analytics' %}" class="addlink">
+            📈 Analytics
+        </a>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    
+    {% if show_statistics_links %}
+    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #007cba;">
+        <h3 style="margin: 0 0 10px 0; color: #007cba;">📊 Quick Statistics</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="text-align: center; padding: 10px; background: white; border-radius: 5px;">
+                <div style="font-size: 24px; font-weight: bold; color: #007cba;">{{ total_messages }}</div>
+                <div style="font-size: 12px; color: #666;">Total Messages</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: white; border-radius: 5px;">
+                <div style="font-size: 24px; font-weight: bold; color: #28a745;">{{ user_messages }}</div>
+                <div style="font-size: 12px; color: #666;">User Messages</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: white; border-radius: 5px;">
+                <div style="font-size: 24px; font-weight: bold; color: #ffc107;">{{ assistant_messages }}</div>
+                <div style="font-size: 12px; color: #666;">Assistant Messages</div>
+            </div>
+            <div style="text-align: center; padding: 10px; background: white; border-radius: 5px;">
+                <div style="font-size: 24px; font-weight: bold; color: #dc3545;">{{ today_messages }}</div>
+                <div style="font-size: 12px; color: #666;">Today's Messages</div>
+            </div>
+        </div>
+        <div style="margin-top: 15px; text-align: center;">
+            <a href="{% url 'admin:chatbot_message_statistics' %}" style="display: inline-block; padding: 8px 16px; background: #007cba; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px;">
+                📊 View Full Statistics
+            </a>
+            <a href="{% url 'admin:chatbot_message_analytics' %}" style="display: inline-block; padding: 8px 16px; background: #28a745; color: white; text-decoration: none; border-radius: 4px;">
+                📈 View Analytics
+            </a>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

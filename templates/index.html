@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}LawBot - AI Legal Assistant{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <div class="avatar">
+            <i class="fas fa-gavel"></i>
+        </div>
+        <div class="info">
+            <h1>LawBot</h1>
+            <p>AI Legal Assistant</p>
+        </div>
+        <div class="status">
+            <div class="status-dot"></div>
+            <span>Online</span>
+        </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages" id="chatMessages">
+        {% if messages %}
+            {% for msg in messages %}
+                <div class="message {{ msg.role }}">
+                    <div class="message-avatar">
+                        {% if msg.role == 'user' %}
+                            <i class="fas fa-user"></i>
+                        {% else %}
+                            <i class="fas fa-robot"></i>
+                        {% endif %}
+                    </div>
+                    <div class="message-content">
+                        {{ msg.content|linebreaksbr }}
+                        <div class="message-time">
+                            {{ msg.created_at|date:"g:i A"|default:"Now" }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="welcome-message">
+                <i class="fas fa-comments"></i>
+                <h3>Welcome to LawBot!</h3>
+                <p>I'm your AI legal assistant. Ask me any legal questions and I'll provide general information to help guide you. Remember, this is not legal advice.</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Chat Input -->
+    <div class="chat-input">
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    class="message-input" 
+                    placeholder="Ask me a legal question..." 
+                    autofocus 
+                    rows="1"
+                    id="messageInput"
+                ></textarea>
+            </div>
+            <button type="button" class="send-button" id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Get DOM elements
+const messageInput = document.getElementById('messageInput');
+const sendButton = document.getElementById('sendButton');
+const chatMessages = document.getElementById('chatMessages');
+
+// Auto-resize textarea
+messageInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+});
+
+// Handle send button click
+sendButton.addEventListener('click', sendMessage);
+
+// Handle Enter key (submit on Enter, new line on Shift+Enter)
+messageInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+
+// Send message function
+function sendMessage() {
+    const message = messageInput.value.trim();
+    if (!message) {
+        return;
+    }
+    
+    // Disable input and button
+    messageInput.disabled = true;
+    sendButton.disabled = true;
+    sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+    
+    // Add user message to chat
+    addMessageToChat('user', message);
+    
+    // Clear input
+    messageInput.value = '';
+    messageInput.style.height = 'auto';
+    
+    // Show typing indicator
+    showTypingIndicator();
+    
+    // Send message to server using the API endpoint
+    fetch('/api/chat/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({message: message})
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Remove typing indicator
+        removeTypingIndicator();
+        
+        if (data.response) {
+            // Add assistant response
+            addMessageToChat('assistant', data.response);
+        } else if (data.error) {
+            // Add error message
+            addMessageToChat('assistant', data.error);
+        }
+        
+        // Re-enable input and button
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        messageInput.focus();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        removeTypingIndicator();
+        addMessageToChat('assistant', 'Sorry, there was an error processing your request. Please try again.');
+        
+        // Re-enable input and button
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        messageInput.focus();
+    });
+}
+
+// Add message to chat
+function addMessageToChat(role, content) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${role}`;
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = role === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = content;
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = new Date().toLocaleTimeString([], {hour: 'numeric', minute:'2-digit'});
+    
+    messageContent.appendChild(timeDiv);
+    messageDiv.appendChild(avatar);
+    messageDiv.appendChild(messageContent);
+    
+    // Remove welcome message if it exists
+    const welcomeMessage = chatMessages.querySelector('.welcome-message');
+    if (welcomeMessage) {
+        welcomeMessage.remove();
+    }
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Show typing indicator
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message assistant';
+    typingDiv.id = 'typingIndicator';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.innerHTML = '<i class="fas fa-robot"></i>';
+    
+    const typingContent = document.createElement('div');
+    typingContent.className = 'typing-indicator';
+    typingContent.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+    `;
+    
+    typingDiv.appendChild(avatar);
+    typingDiv.appendChild(typingContent);
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Remove typing indicator
+function removeTypingIndicator() {
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+// Get CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Focus input on page load
+window.addEventListener('load', function() {
+    messageInput.focus();
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+</script>
+{% endblock %}

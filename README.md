@@ -15,7 +15,7 @@ A Django-based legal assistant chatbot that provides general legal information u
 ### 1. Clone and Setup
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/harryongit/LawBot---Legal-Assistant-Chatbot.git
 cd lawbot
 ```
 
@@ -24,7 +24,7 @@ cd lawbot
 Copy the example environment file and configure your settings:
 
 ```bash
-cp env.example .env
+cp .env .env
 ```
 
 Edit `.env` and add your OpenAI API key:
@@ -162,14 +162,6 @@ lawbot/
 ├── env.example       # Environment variables example
 └── manage.py         # Django management script
 ```
-
-## Environment Variables
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Yes |
-| `DEBUG` | Django debug mode | No (default: True) |
-| `SECRET_KEY` | Django secret key | No (auto-generated) |
 
 ## Legal Disclaimer
 

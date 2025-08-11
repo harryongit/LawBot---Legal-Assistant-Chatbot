@@ -167,8 +167,9 @@ lawbot/
 ## **🖼 Application Screenshots**
 
 <p align="center">
+<img src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" width="45%" />
   <img src="https://github.com/user-attachments/assets/fa1dc758-c030-4125-a4ff-082666f774d7" width="45%" />
-  <img src="https://github.com/user-attachments/assets/bd7dad7c-cbf8-45f2-bb1c-d2e5ff639c95" width="45%" />
+  
 </p>
 
 <p align="center">
